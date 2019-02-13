@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <iomanip>
+#include <time.h>
 
 using std::cout;
 using std::cin;
@@ -22,6 +23,16 @@ double mediana;
 };
 
 void nuskaitymas(int& sk, stud*& studentai){
+    int pasirinkimas;
+    do{
+    cout << "Pasirinkite duomenu ivedimo buda: " << endl;
+    cout << "1. Ivedimas per konsole" << endl;
+    cout << "2. Ivedimas generuojant atsitiktines reiksmes" << endl;
+    cin >> pasirinkimas;
+
+    switch(pasirinkimas){
+
+    case 1 :
     cout << "Pasibaigus namu darbu eilutei iveskite neigiama skaiciu (pvz. -1)" << endl;
     cout << "Iveskite studentu skaiciu: ";
     cin >> sk;
@@ -42,9 +53,39 @@ void nuskaitymas(int& sk, stud*& studentai){
         }
         cout << "Egzamino ivertinima: ";
         cin >> studentai[i].egz;
+    }
+    break;
 
+    case 2 :
+        int ndk, k;
+        char eil;
+        cout << "Iveskite studentu skaiciu: ";
+        cin >> sk;
+        cout << "Iveskite namu darbu kieki: ";
+        cin >> ndk;
+        studentai = new stud[sk];
+        srand(time(NULL));
+
+        for(int i = 0; i < sk; i++){
+            studentai[i].vardas = "Vardas" + std::to_string(i);
+            studentai[i].pavarde = "Pavarde" + std::to_string(i);
+            studentai[i].vidurkis = 0;
+            for(int j = 0; j < ndk; j++){
+                k = 1.0*rand()/RAND_MAX*10+1;
+                studentai[i].nd.push_back(k);
+                studentai[i].vidurkis += k;
+            }
+            studentai[i].egz = 1.0*rand()/RAND_MAX*10+1;
+        }
+        break;
+    default :
+        cout << "Klaida. Neatpazinta ivedimo reiksme" << endl;
+        pasirinkimas = 0;
+        }
+    }while(pasirinkimas == 0);
+
+    for(int i = 0; i < sk; i++){
         studentai[i].vidurkis = studentai[i].vidurkis/studentai[i].nd.size()*0.4 + studentai[i].egz*0.6;
-
         for(int k = 0; k < studentai[i].nd.size(); k++){
             for(int j = i; j < studentai[i].nd.size()-1; j++){
                 if(studentai[i].nd[k] < studentai[i].nd[j]){
@@ -68,8 +109,8 @@ void spausdinimas(int sk, stud* studentai){
     for(int i = 0; i < sk; i++){
         cout << setw(13) << left << studentai[i].pavarde;
         cout << setw(13) << left << studentai[i].vardas;
-        cout << setw(13) << left << fixed << setprecision(3) << studentai[i].vidurkis;
-        cout << setw(13) << left << fixed << setprecision(3) << studentai[i].mediana << endl;
+        cout << setw(13) << left << fixed << setprecision(2) << studentai[i].vidurkis;
+        cout << setw(13) << left << fixed << setprecision(2) << studentai[i].mediana << endl;
     }
 }
 
