@@ -29,64 +29,72 @@ void nuskaitymasFaile(int&, stud*&);
 void nuskaitymasKonsoleje(int&, stud*&);
 void nuskaitymasGeneruojant(int&, stud*&);
 void rikiavimas(int&, stud*&);
-void vidurkis(int, stud*&);
+void vidurkisFormatavimas(int, stud*&, int&, int&);
 
-void nuskaitymas(int& sk, stud*& studentai){
-    int pasirinkimas;
+
+void nuskaitymas(int& sk, stud*& studentai, int& vilgis, int& pilgis){
+
+    string pasirinkimas;
     do{
     cout << "Pasirinkite duomenu ivedimo buda: " << endl;
     cout << "1. Ivedimas per konsole" << endl;
     cout << "2. Ivedimas generuojant atsitiktines reiksmes" << endl;
     cout << "3. Ivedimas is tekstinio failo" << endl;
     cin >> pasirinkimas;
+    if(pasirinkimas == "1") nuskaitymasKonsoleje(sk, studentai);
+    else if(pasirinkimas == "2") nuskaitymasGeneruojant(sk, studentai);
+    else if(pasirinkimas == "3") nuskaitymasFaile(sk, studentai);
+    else{
+        pasirinkimas = "0";
+        cout << "Klaida. Neteisingas pasirinkimas, iveskite skaicius 1-3" << endl;
+    }
+    }while(pasirinkimas == "0");
 
-    switch(pasirinkimas){
-
-    case 1 :
-        nuskaitymasKonsoleje(sk, studentai);
-    break;
-
-    case 2 :
-        nuskaitymasGeneruojant(sk, studentai);
-    break;
-    case 3 :
-        nuskaitymasFaile(sk, studentai);
-    break;
-    default :
-        cout << "Klaida. Neatpazinta ivedimo reiksme" << endl;
-        pasirinkimas = 0;
-        }
-    }while(pasirinkimas == 0);
-
-    vidurkis(sk, studentai);
     rikiavimas(sk, studentai);
+    vidurkisFormatavimas(sk, studentai, vilgis, pilgis);
 
 }
 
 
-void spausdinimas(int sk, stud* studentai){
-    cout << "Pavarde      Vardas       VidGalutinis MedGalutinis" << endl;
-    cout << "---------------------------------------------------" << endl;
+void spausdinimas(int sk, stud* studentai, int vilgis, int pilgis){
+    cout << setw(pilgis+4) << left << "Pavarde";
+    cout << setw(vilgis+4) << left << "Vardas";
+    cout << "VidGalutinis MedGalutinis" << endl;
+    cout << "-------------------------";
+    string eilute(pilgis+vilgis+8, '-');
+    cout << eilute << endl;
     for(int i = 0; i < sk; i++){
-        cout << setw(13) << left << studentai[i].pavarde;
-        cout << setw(13) << left << studentai[i].vardas;
+        cout << setw(pilgis+4) << left << studentai[i].pavarde;
+        cout << setw(vilgis+4) << left << studentai[i].vardas;
         cout << setw(13) << left << fixed << setprecision(2) << studentai[i].vidurkis;
         cout << setw(13) << left << fixed << setprecision(2) << studentai[i].mediana << endl;
     }
 }
 
+int ivedimas(){
+    int k;
+    cin >> k;
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cout << "Klaida. Ivestas simbolis nera skaitmuo" << endl;
+            return 0;
+        }
+    else return k;
+}
+
 int main(){
     stud* studentai;
-    int sk;
-    nuskaitymas(sk, studentai);
-    spausdinimas(sk, studentai);
+    int sk = -1, vilgis = 10, pilgis = 10;
+    nuskaitymas(sk, studentai, vilgis, pilgis);
+    spausdinimas(sk, studentai, vilgis, pilgis);
 }
 
 void nuskaitymasKonsoleje(int& sk, stud*& studentai) {
-    int k;
+    int k = 1;
     cout << "Pasibaigus namu darbu eilutei iveskite neigiama skaiciu (pvz. -1)" << endl;
     cout << "Iveskite studentu skaiciu: ";
-    cin >> sk;
+    while(sk <= 0) sk = ivedimas();
     studentai = new stud[sk];
     for(int i = 0; i < sk; i++){
         cout << "Iveskite " << i+1 << " studento varda: ";
@@ -95,16 +103,17 @@ void nuskaitymasKonsoleje(int& sk, stud*& studentai) {
         cin >> studentai[i].pavarde;
         cout << "Namu darbu rezultatus:" << endl;
         studentai[i].vidurkis = 0;
-        k = 1;
+
         while(k >= 0){
-            cin >> k;
-            if(k >= 0){
+            k = ivedimas();
+            if(k > 0){
                 studentai[i].nd.push_back(k);
                 studentai[i].vidurkis += k;
             }
         }
         cout << "Egzamino ivertinima: ";
-        cin >> studentai[i].egz;
+        studentai[i].egz = 0;
+        while(studentai[i].egz <= 0) studentai[i].egz = ivedimas();
     }
 }
 
@@ -149,18 +158,18 @@ void nuskaitymasFaile(int& sk, stud*& studentai){
         in.close();
 }
 
-void vidurkis(int sk, stud*& studentai){
+void vidurkisFormatavimas(int sk, stud*& studentai, int& vilgis, int& pilgis){
     for(int i = 0; i < sk; i++){
+        if(vilgis < studentai[i].vardas.size()) vilgis = studentai[i].vardas.size();
+        if(pilgis < studentai[i].pavarde.size()) pilgis = studentai[i].pavarde.size();
         studentai[i].vidurkis = studentai[i].vidurkis/studentai[i].nd.size()*0.4 + studentai[i].egz*0.6;
 
             std::sort(studentai[i].nd.begin(), studentai[i].nd.end());
-            for(int j = 0; j < studentai[i].nd.size(); j++) cout << studentai[i].nd[j] << " ";
-            cout << endl;
 
         if(studentai[i].nd.size()%2 > 0){
-            studentai[i].mediana = studentai[i].nd[studentai[i].nd.size()/2+1];
+            studentai[i].mediana = studentai[i].nd[studentai[i].nd.size()/2];
         }
-        else studentai[i].mediana = (studentai[i].nd[studentai[i].nd.size()/2]+studentai[i].nd[studentai[i].nd.size()/2-1])/2.0;
+        else studentai[i].mediana = (studentai[i].nd[studentai[i].nd.size()/2] + studentai[i].nd[studentai[i].nd.size()/2-1])/2.0;
     }
 }
 
