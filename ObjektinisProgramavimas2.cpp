@@ -160,27 +160,33 @@ void nuskaitymasGeneruojant(int& sk, stud*& studentai){
 
 void nuskaitymasFaile(int& sk, stud*& studentai){
     ifstream in("kursiokai.txt");
-    if(in.good()){
+    if(!in.good()){
+        cout << "Klaida. Toks failas neegzistuoja" << endl;
+        exit(1);
+    }
     string eilute;
-    int ndk, temp;
+    int temp, ndk;
     in >> sk >> ndk;
+    if(in.fail() || sk <= 0){
+        cout << "Klaida. Neteisingai ivestas studentu arba namu darbu skaicius" << endl;
+        exit(1);
+        }
         studentai = new stud[sk];
         for(int i = 0; i < sk; i++){
             studentai[i].vidurkis = 0;
             in >> studentai[i].vardas >> studentai[i].pavarde;
             for(int j = 0; j < ndk; j++){
                 in >> temp;
+                if(in.fail() || temp <= 0) {
+                    cout << "Klaida. Neteisingai ivesti namu darbu ivertinimai" << endl;
+                    exit(1);
+                }
                 studentai[i].nd.push_back(temp);
                 studentai[i].vidurkis += temp;
             }
             in >> studentai[i].egz;
         }
         in.close();
-    }
-    else{
-        cout << "Klaida. Toks failas neegzistuoja" << endl;
-        exit(1);
-    }
 }
 
 void vidurkisFormatavimas(int sk, stud*& studentai, int& vilgis, int& pilgis){
