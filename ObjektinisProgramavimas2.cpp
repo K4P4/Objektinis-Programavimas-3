@@ -217,3 +217,4 @@ void rikiavimas(int& sk, stud*& studentai){
        }
     }
 }
+
