@@ -1,5 +1,5 @@
 4 5
-Vardas1 Paul 8 9 10 5 10 9
-Vardas2 Janus 7 10 8 5 4 6
-Vardas3 Brazen 5 2 10 10 8 7
-Vardas4 Cen 4 8 8 9 4 8
+Vardas1     Paul    8    9     10   6    10   9
+Vardas2     Janus    7    10    8    5    4    6
+Vardas3     Brazen    5    2     10   10    8   7
+Vardas4     Cen    4    8    8    9    4    8

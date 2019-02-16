@@ -201,7 +201,7 @@ void vidurkisFormatavimas(int sk, stud*& studentai, int& vilgis, int& pilgis){
             studentai[i].mediana = studentai[i].nd[studentai[i].nd.size()/2];
         }
         else studentai[i].mediana = (studentai[i].nd[studentai[i].nd.size()/2] + studentai[i].nd[studentai[i].nd.size()/2-1])/2.0;
-        studentai[i].mediana = studentai[i].mediana/studentai[i].nd.size()*0.4 + studentai[i].egz*0.6;
+        studentai[i].mediana = studentai[i].mediana*0.4 + studentai[i].egz*0.6;
     }
 }
 
