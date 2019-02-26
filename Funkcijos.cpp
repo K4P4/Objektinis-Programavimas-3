@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <stdlib.h>
 #include <string>
+#include <chrono>
 
 
 using std::cout;
@@ -18,10 +19,9 @@ using std::setw;
 using std::left;
 using std::setprecision;
 using std::fixed;
-using std::ifstream;
 using std::cerr;
 
-void nuskaitymas(int& sk, stud*& studentai, int& vilgis, int& pilgis){
+void nuskaitymas(int& sk, vector<stud>& studentai, int& vilgis, int& pilgis){
 
     string pasirinkimas;
     do{
@@ -29,10 +29,12 @@ void nuskaitymas(int& sk, stud*& studentai, int& vilgis, int& pilgis){
     cout << "1. Ivedimas per konsole" << endl;
     cout << "2. Ivedimas generuojant atsitiktines reiksmes" << endl;
     cout << "3. Ivedimas is tekstinio failo" << endl;
+    cout << "4. Generavimas i failus" << endl;
     cin >> pasirinkimas;
     if(pasirinkimas == "1") nuskaitymasKonsoleje(sk, studentai);
     else if(pasirinkimas == "2") nuskaitymasGeneruojant(sk, studentai);
     else if(pasirinkimas == "3") nuskaitymasFaile(sk, studentai);
+    else if(pasirinkimas == "4") generavimasFaile(sk, studentai);
     else{
         pasirinkimas = "0";
         cerr << "Klaida. Neteisingas pasirinkimas, iveskite skaicius 1-3" << endl;
@@ -50,7 +52,7 @@ void nuskaitymas(int& sk, stud*& studentai, int& vilgis, int& pilgis){
 }
 
 
-void spausdinimas(int sk, stud* studentai, int vilgis, int pilgis){
+void spausdinimas(int sk, vector<stud> studentai, int vilgis, int pilgis){
     string pasirinkimas;
     do{
     cout << "Naudoti 1.vidurki ar 2.mediana? ";
@@ -94,88 +96,129 @@ int ivedimas(){
     else return k;
 }
 
-void nuskaitymasKonsoleje(int& sk, stud*& studentai) {
+void nuskaitymasKonsoleje(int& sk, vector<stud>& studentai) {
     int k;
     cout << "Pasibaigus namu darbu eilutei iveskite neigiama skaiciu (pvz. -1)" << endl;
     cout << "Iveskite studentu skaiciu: ";
     while(sk <= 0) sk = ivedimas();
-    studentai = new stud[sk];
     for(int i = 0; i < sk; i++){
+        stud studentas;
         cout << "Iveskite " << i+1 << " studento varda: ";
-        cin >> studentai[i].vardas;
+        cin >> studentas.vardas;
         cout << "Pavarde: ";
-        cin >> studentai[i].pavarde;
+        cin >> studentas.pavarde;
         cout << "Namu darbu rezultatus:" << endl;
-        studentai[i].vidurkis = 0;
+        studentas.vidurkis = 0;
         k=1;
         while(k >= 0){
             k = ivedimas();
             if(k > 0){
-                studentai[i].nd.push_back(k);
-                studentai[i].vidurkis += k;
+                studentas.nd.push_back(k);
+                studentas.vidurkis += k;
             }
         }
         cout << "Egzamino ivertinima: ";
-        studentai[i].egz = 0;
-        while(studentai[i].egz <= 0) studentai[i].egz = ivedimas();
+        studentas.egz = 0;
+        while(studentas.egz <= 0) studentas.egz = ivedimas();
+        studentai.push_back(studentas);
     }
 }
 
-void nuskaitymasGeneruojant(int& sk, stud*& studentai){
-    char eil;
+void generavimasFaile(int& sk, vector<stud>& studentai){
+    int ndk = -1, temp;
+
+    cout << "Iveskite studentu skaiciu: ";
+    while(sk <= 0) sk = ivedimas();
+    cout << "Iveskite namu darbu kieki: ";
+    while(ndk <= 0) ndk = ivedimas();
+
+    auto start = std::chrono::high_resolution_clock::now();
+    std::ofstream out("sugeneruota.txt");
+    srand(time(NULL));
+
+    for(int i = 0; i < sk; i++){
+        out << "Vardas" + std::to_string(i+1) << " Pavarde" + std::to_string(i+1);
+        for(int j = 0; j <= ndk; j++){
+            temp = 1.0*rand()/RAND_MAX*10+1;
+            out << " " <<temp;
+        }
+        out << endl;
+    }
+    nuskaitymasFaile(sk, studentai);
+
+    out.close();
+    std::ofstream kt("Kieti.txt");
+    std::ofstream nk("NelabaiKieti.txt");
+    for(int i = 0; i < sk; i++){
+        studentai[i].vidurkis = studentai[i].vidurkis/studentai[i].nd.size()*0.4 + studentai[i].egz*0.6;
+        if(studentai[i].vidurkis >= 5.0){
+            kt << studentai[i].vardas << " " << studentai[i].pavarde << " " << studentai[i].vidurkis << endl;
+        }
+        else nk << studentai[i].vardas << " " << studentai[i].pavarde << " " << studentai[i].vidurkis << endl;
+    }
+    kt.close();
+    nk.close();
+    auto ending = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = ending-start;
+    cout << sk << " studentu duomenu uzpildymas uztruko: " << diff.count() << "s" << endl;
+    exit(1);
+}
+
+
+void nuskaitymasGeneruojant(int& sk, vector<stud>& studentai){
     int ndk = -1, temp;
         cout << "Iveskite studentu skaiciu: ";
         while(sk <= 0) sk = ivedimas();
         cout << "Iveskite namu darbu kieki: ";
         while(ndk <= 0) ndk = ivedimas();
-        studentai = new stud[sk];
         srand(time(NULL));
 
         for(int i = 0; i < sk; i++){
-            studentai[i].vardas = "Vardas" + std::to_string(i+1);
-            studentai[i].pavarde = "Pavarde" + std::to_string(i+1);
-            studentai[i].vidurkis = 0;
+            stud studentas;
+            studentas.vardas = "Vardas" + std::to_string(i+1);
+            studentas.pavarde = "Pavarde" + std::to_string(i+1);
+            studentas.vidurkis = 0;
             for(int j = 0; j < ndk; j++){
                 temp = 1.0*rand()/RAND_MAX*10+1;
-                studentai[i].nd.push_back(temp);
-                studentai[i].vidurkis += temp;
+                studentas.nd.push_back(temp);
+                studentas.vidurkis += temp;
             }
-            studentai[i].egz = 1.0*rand()/RAND_MAX*10+1;
+            studentas.egz = 1.0*rand()/RAND_MAX*10+1;
+            studentai.push_back(studentas);
         }
 }
 
-void nuskaitymasFaile(int& sk, stud*& studentai){
-    ifstream in("kursiokai.txt");
+void nuskaitymasFaile(int& sk, vector<stud>& studentai){
+    std::ifstream in("sugeneruota.txt");
+    string eil;
     if(!in.good()){
         cerr << "Klaida. Toks failas neegzistuoja" << endl;
         exit(1);
     }
-    string eilute;
-    int temp, ndk;
-    in >> sk >> ndk;
-    if(in.fail() || sk <= 0){
-        cerr << "Klaida. Neteisingai ivestas studentu arba namu darbu skaicius" << endl;
-        exit(1);
-        }
-        studentai = new stud[sk];
-        for(int i = 0; i < sk; i++){
-            studentai[i].vidurkis = 0;
-            in >> studentai[i].vardas >> studentai[i].pavarde;
-            for(int j = 0; j < ndk; j++){
-                in >> temp;
+    int temp;
+    sk = 0;
+        while(in >> eil){
+            stud studentas;
+            studentas.vidurkis = 0;
+            studentas.vardas = eil;
+            in >> studentas.pavarde;
+            while(in.peek()!='\n' && in >> temp){
                 if(in.fail() || temp <= 0) {
-                    cerr << "Klaida. Neteisingai ivesti namu darbu ivertinimai" << endl;
+                    cerr << "Klaida. Patikrinkite faila" << endl;
                     exit(1);
                 }
-                studentai[i].nd.push_back(temp);
-                studentai[i].vidurkis += temp;
+                studentas.nd.push_back(temp);
+                studentas.vidurkis += temp;
             }
-            in >> studentai[i].egz;
+            studentas.egz = studentas.nd[studentas.nd.size()-1];
+            studentas.nd.pop_back();
+            studentai.push_back(studentas);
+            sk++;
         }
         in.close();
 }
 
-void vidurkisFormatavimas(int sk, stud*& studentai, int& vilgis, int& pilgis){
+void vidurkisFormatavimas(int sk, vector<stud>& studentai, int& vilgis, int& pilgis){
     for(int i = 0; i < sk; i++){
         if(vilgis < studentai[i].vardas.size()) vilgis = studentai[i].vardas.size();
         if(pilgis < studentai[i].pavarde.size()) pilgis = studentai[i].pavarde.size();
@@ -192,7 +235,7 @@ void vidurkisFormatavimas(int sk, stud*& studentai, int& vilgis, int& pilgis){
     }
 }
 
-void rikiavimas(int& sk, stud*& studentai){
+void rikiavimas(int& sk, vector<stud>& studentai){
     stud temp;
     for(int i = 0; i < sk-1; i++){
        for(int j = 0; j < sk-i-1; j++){
