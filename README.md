@@ -1,4 +1,4 @@
-##V.04 failo generavimas, skirstymas bei išvedimas su 10 pažymių kiekvienam studentui užtruko: 
+## V.04 failo generavimas, skirstymas bei išvedimas su 10 pažymių kiekvienam studentui užtruko: 
 - `0,001s su 10 studentų
 - `0,004s su 100 studentų
 - `0,029s su 1000 studentų
