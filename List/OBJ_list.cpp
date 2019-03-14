@@ -58,12 +58,14 @@ int main(){
 
     nuskaitymasFaile(sk, studentai);
     list<stud> vargs;
-    list<stud> kieti;
 
-    for(stud n : studentai){
-        n.vidurkis = n.vidurkis/n.nd.size()*0.4 + n.egz*0.6;
-        if(n.vidurkis >= 5.0) kieti.push_back(n);
-        else vargs.push_back(n);
+    for(list<stud>::iterator it = studentai.begin(); it != studentai.end();){
+        it->vidurkis = it->vidurkis/it->nd.size()*0.4 + it->egz*0.6;
+        if(it->vidurkis < 5.0){
+            vargs.push_back(*it);
+            it = studentai.erase(it);
+        }
+        else ++it;
     }
 
     auto ending = high_resolution_clock::now();
