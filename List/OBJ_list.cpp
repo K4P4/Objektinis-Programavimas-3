@@ -22,7 +22,7 @@ double mediana;
 };
 
 void nuskaitymasFaile(int& sk, list<stud>& studentai){
-    std::ifstream in("sugeneruota1000000.txt");
+    std::ifstream in("sugeneruota100000.txt");
     string eil;
     if(!in.good()){
         cerr << "Klaida. Toks failas neegzistuoja" << endl;
