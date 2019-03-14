@@ -67,6 +67,7 @@ int main(){
     }
 
     auto ending = high_resolution_clock::now();
+
     duration<double> diff = ending-start;
     std::cout << sk << " studentu isskirstymas uztruko: " << diff.count() << "s" << endl;
 }
