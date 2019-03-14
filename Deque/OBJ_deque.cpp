@@ -22,7 +22,7 @@ double mediana;
 };
 
 void nuskaitymasFaile(int& sk, deque<stud>& studentai){
-    std::ifstream in("sugeneruota1000000.txt");
+    std::ifstream in("sugeneruota100000.txt");
     string eil;
     if(!in.good()){
         cerr << "Klaida. Toks failas neegzistuoja" << endl;
@@ -58,16 +58,17 @@ int main(){
 
     nuskaitymasFaile(sk, studentai);
     deque<stud> vargs;
-    deque<stud> kieti;
 
-    for(int i = 0; i < sk; i++){
+    for(int i = 0; i < studentai.size(); i++){
         studentai[i].vidurkis = studentai[i].vidurkis/studentai[i].nd.size()*0.4 + studentai[i].egz*0.6;
-        if(studentai[i].vidurkis >= 5.0) kieti.push_back(studentai[i]);
-        else vargs.push_back(studentai[i]);
+        if(studentai[i].vidurkis < 5.0){
+            vargs.push_back(studentai[i]);
+            studentai.erase(studentai.begin()+i);
+            i--;
+        }
     }
 
     auto ending = high_resolution_clock::now();
-
     duration<double> diff = ending-start;
     std::cout << sk << " studentu isskirstymas uztruko: " << diff.count() << "s" << endl;
 }
