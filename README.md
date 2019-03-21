@@ -119,3 +119,32 @@ Gaunami tokie laikai:
 
 Matoma, jog algoritmas veikimo ženkliai nepaspartino.
 
+# Papildoma užduotis
+
+## Funkcija su vector
+```
+vector<stud> iterpkKietus(vector<stud>& studentai){
+    vector<stud> minksti;
+    vector<stud>::size_type i = 0;
+    vector<stud>::size_type it = 0;
+    // invariantas: vektoriaus `studentai` elementai [0, i) yra "kieti"
+    while (i != studentai.size()) {
+      if (gavoSkola(studentai[i])) {
+        minksti.push_back(studentai[i]);
+      } else{
+        studentai[it] = studentai[i];
+        ++it;
+      }
+      ++i;
+    }
+    studentai.resize(it);
+    studentai.shrink_to_fit();
+    return minksti;  // grąžina studentus gavusius skolą
+}
+```
+
+| Studentų skaičius | RaskMinkstus() | IterpkKietus() |
+| ----------------  | -------------- | -------------- |
+| 10000             | 8.174s         | 0.001s         |
+| 100000            | 1.03s          | 0.008s         |
+
