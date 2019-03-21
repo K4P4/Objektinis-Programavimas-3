@@ -145,32 +145,29 @@ vector<stud> iterpkKietus(vector<stud>& studentai){
 ## Funkcija su deque
 
 ```
-deque<stud> raskMinkstus(vector<stud>& studentai){
-    deque<stud> minksti;
-    deque<stud>::size_type i = 0;
-    deque<stud>::size_type it = 0;
-    while (i != studentai.size()) {
-      if (gavoSkola(studentai[i])) {
+vector<stud> raskMinkstus(deque<stud>& studentai){
+    vector<stud> minksti;
+    int it = 0;
+    int n = studentai.size();
+    for(int i = 0; i < n; i++) {
+      if(gavoSkola(studentai[i])){
         minksti.push_back(studentai[i]);
       } else{
         studentai.push_front(studentai[i]);
         ++it;
       }
-      ++i;
     }
     studentai.resize(it);
     studentai.shrink_to_fit();
-    std::cout << studentai.size() << " " << it << endl;
     return minksti;
 }
 ```
 
 ## Rezultatai
 
-| Studentų skaičius | RaskMinkstus() | IterpkKietus() | IterpkKietus() Deque |
-| ----------------  | -------------- | -------------- | -------------------- |
-| 10000             | 8.174s         | 0.163s         | 0.000s               |
-| 100000            | 1651.55s       | 1.14s          | 0.000s               |
+| Studentų skaičius | RaskMinkstus() | IterpkKietus() Vector | IterpkKietus() Deque |
+| ----------------  | -------------- | --------------------- | -------------------- |
+| 10000             | 7.764s         | 0.092s                | 0.091s               |
+| 100000            | 795.47s        | 0.916s                | 0.876s               |
 
-
-
+Pastebimas milžiniškas spartos padidėjimas naudojant ```IterpkKietus()``` funckiją palyginus su ```RaskMinkstus()```. Tai įvyksta dėl tos pačios priežasties, dėl kurios *list* buvo greitesnis palyginus su kitais konteineriais V1.0 testavimo metu, nes nebereikia perkopijuoti elementų vieną iš jų ištrynus. Šis būdas leidžia *vector* ir *deque* turėti tiek spartą, tiek atsikratyti nenaudojamos atminties užimtumo. Tarp *vector* ir *deque* pastebimas labai nedidelis spartos skirtumas, tačiau *deque* atveju pačios funkcijos veikimo metu yra naudojama daugiau atminties.
