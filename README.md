@@ -127,7 +127,6 @@ vector<stud> iterpkKietus(vector<stud>& studentai){
     vector<stud> minksti;
     vector<stud>::size_type i = 0;
     vector<stud>::size_type it = 0;
-    // invariantas: vektoriaus `studentai` elementai [0, i) yra "kieti"
     while (i != studentai.size()) {
       if (gavoSkola(studentai[i])) {
         minksti.push_back(studentai[i]);
@@ -139,12 +138,39 @@ vector<stud> iterpkKietus(vector<stud>& studentai){
     }
     studentai.resize(it);
     studentai.shrink_to_fit();
-    return minksti;  // grąžina studentus gavusius skolą
+    return minksti;
 }
 ```
 
-| Studentų skaičius | RaskMinkstus() | IterpkKietus() |
-| ----------------  | -------------- | -------------- |
-| 10000             | 8.174s         | 0.001s         |
-| 100000            | 1.03s          | 0.008s         |
+## Funkcija su deque
+
+```
+deque<stud> raskMinkstus(vector<stud>& studentai){
+    deque<stud> minksti;
+    deque<stud>::size_type i = 0;
+    deque<stud>::size_type it = 0;
+    while (i != studentai.size()) {
+      if (gavoSkola(studentai[i])) {
+        minksti.push_back(studentai[i]);
+      } else{
+        studentai.push_front(studentai[i]);
+        ++it;
+      }
+      ++i;
+    }
+    studentai.resize(it);
+    studentai.shrink_to_fit();
+    std::cout << studentai.size() << " " << it << endl;
+    return minksti;
+}
+```
+
+## Rezultatai
+
+| Studentų skaičius | RaskMinkstus() | IterpkKietus() | IterpkKietus() Deque |
+| ----------------  | -------------- | -------------- | -------------------- |
+| 10000             | 8.174s         | 0.163s         | 0.000s               |
+| 100000            | 1651.55s       | 1.14s          | 0.000s               |
+
+
 
