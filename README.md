@@ -95,10 +95,11 @@ Naudoti cpp failai pateikti konteineriams atitinkamo pavadinimo aplankuose
 Pritaikius find_if algoritmą antrąjai strategijai pavidalu:
 ```
 vector<stud>::iterator it = studentai.begin();
-while(it != studentai.end()){
-        it = std::find_if(it, studentai.end(), maziau);
+    it = std::find_if(it, studentai.end(), maziau);
+    while(it != studentai.end()){
         vargs.push_back(*it);
         it = studentai.erase(it);
+        it = std::find_if(it, studentai.end(), maziau);
     }
 ```
 kur *maziau* tai:
