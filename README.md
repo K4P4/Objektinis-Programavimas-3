@@ -62,7 +62,7 @@ Naudoti cpp failai pateikti konteineriams atitinkamo pavadinimo aplankuose
 | 100000            | 0.913s       | 788.002s     |
 | 1000000           | 8.998s       | *Per ilgai*  |
 
-Labai greitai ižvelgiamas didelis vector konteinerio minusas - elementų trynimas. Kadangi ištrynus elementą visi po jo esantys elementai turi būti perkopijuojami per vieną vietą, gauname jog esant dideliam elementų, o tai reiškia ir trynimų skaičiui, programos veikimo laikas pailgėja net iki 863 kartų (su 100000 duomenų). Nors naudojamos atminties kiekis sumažėja dvigubai (vietoje trijų konteinerių, kuriuose yra kiekvienas elementas du kartus, turime du konteinerius, kuriuose jie nesikartoja) tai, mano manymu, neatperka tokio milžininško veikimo laiko pailgėjimo, o jei atmintis tampa didele problema, tuomet reiktų naudoti vector konteinerio alternatyvas.
+Labai greitai ižvelgiamas didelis vector konteinerio minusas - elementų trynimas. Kadangi ištrynus elementą visi po jo esantys elementai turi būti perkopijuojami per vieną vietą, gauname jog esant dideliam elementų, o tai reiškia ir trynimų skaičiui, programos veikimo laikas pailgėja net iki 863 kartų (su 100000 duomenų). Nors naudojamos atminties kiekis sumažėja dvigubai (vietoje trijų konteinerių, kuriuose yra kiekvienas elementas du kartus, turime du konteinerius, kuriuose jie nesikartoja) tai, mano manymu, neatperka tokio milžininško veikimo laiko pailgėjimo, o jei atmintis tampa didele problema, tuomet reiktų naudoti vector konteinerio alternatyvas arba stl algoritmus.
 
 ## std::deque
 
@@ -92,6 +92,8 @@ Naudoti cpp failai pateikti konteineriams atitinkamo pavadinimo aplankuose
 
 # Algoritmų bandymas
 
+## find_if
+
 Pritaikius find_if algoritmą antrąjai strategijai pavidalu:
 ```
 vector<stud>::iterator it = studentai.begin();
@@ -110,7 +112,7 @@ return (esm.vidurkis < 5.0);
 ```
 Gaunami tokie laikai:
 
-| Studentų skaičius | Su algorimtu | Be algoritmo |
+| Studentų skaičius | Su find_if() | Be algoritmo |
 | ----------------  | ------------ | ------------ |
 | 100               | 0.002s       | 0.002s       |
 | 1000              | 0.088s       | 0.088s       |
@@ -119,6 +121,65 @@ Gaunami tokie laikai:
 | 1000000           | *Per ilgai*  | *Per ilgai*  |
 
 Matoma, jog algoritmas veikimo ženkliai nepaspartino.
+
+
+## copy_if + remove_if
+
+```
+std::copy_if(studentai.begin(), studentai.end(), std::back_inserter(vargs), maziau);
+it = std::remove_if(studentai.begin(), studentai.end(), maziau);
+studentai.erase(it, studentai.end());
+studentai.shrink_to_fit();
+```
+Palyginimas su 1-ąja strategija:
+
+| Studentų skaičius | copy_if+remove_if | 1 Strategija |
+| ----------------  | ----------------- | ------------ |
+| 1000              | 0.009s            | 0.009s       |
+| 10000             | 0.092s            | 0.092s       |
+| 100000            | 0.893s            | 0.913s       |
+| 1000000           | 8.847s            | 8.998s       |
+
+Padidėjo ir sparta ir išspręsta nenaudojamos atminties problema lyginant su pirmąja strategija.
+
+## partition ir stable_partition
+
+```
+vector<stud>::iterator it = studentai.begin();
+
+it = std::stable_partition(studentai.begin(), studentai.end(), maziau);
+vector<stud> kieti(it, studentai.end());
+
+studentai.erase(it, studentai.end());
+studentai.shrink_to_fit();
+```
+
+Palyginimas su 1-ąja strategija:
+
+| Studentų skaičius | stable_partition | partition | 1 Strategija |
+| ----------------  | ---------------- | --------  | ------------ |
+| 1000              | 0.009s           | 0.009s    | 0.009s       |
+| 10000             | 0.098s           | 0.093s    | 0.092s       |
+| 100000            | 0.973s           | 0.904s    | 0.913s       |
+| 1000000           | 9.499s           | 8.701s    | 8.998s       |
+
+Pastebima, jog stable_partition yra lėtesnis už 1-ąją strategiją, o partition šiek tiek greitesnis. Partition greitesnis už 1-ąją strategiją todėl, kad nereikia ieškoti ką kopijuoti iteruojant per visą vektorių, kopijuojamas yra visas blokas elementų. O stable_partition atsilieka, nes rikiuojant jis išlaiko originalią elementų eilės tvarką.
+
+## greičiausias būdas: partition be kopijavimo
+
+```
+vector<stud>::iterator it = studentai.begin();
+it = std::partition(studentai.begin(), studentai.end(), maziau);
+```
+
+| Studentų skaičius | Trukmė  | 
+| ----------------  | ------- | 
+| 1000              | 0.009s  |
+| 10000             | 0.086s  |
+| 100000            | 0.838s  |
+| 1000000           | 8.197s  | 
+
+Nekuriant dviejų vektorių, o tiesiog prisimenant iteratorių, ties kuriuo prasideda "kieti" studentai, yra sutaupoma daug laiko, tačiau manipuliacija vektoriais gali būti sudėtingesnė. Pvz. jeigu norėsime funkcijai perduoti "kietus" studentus, turėsime perduoti visą bendrą vektorių ir iteratorių.
 
 # Papildoma užduotis
 
