@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <chrono>
+#include <algorithm>
 
 using std::string;
 using std::vector;
@@ -10,14 +11,44 @@ using std::cerr;
 using std::endl;
 using namespace std::chrono;
 
-struct stud{
-string vardas;
-string pavarde;
-int egz;
-vector<int> nd;
-double vidurkis;
-double mediana;
+
+class stud{
+private:
+    string vardas;
+    string pavarde;
+    int egz;
+    vector<int> nd;
+    double vidurkis;
+public:
+    stud() : vidurkis(0){}
+    stud(std::istream& is);
+    inline string getVardas() const { return vardas;}
+    inline string getPavarde() const { return pavarde;}
+    inline double getVidurkis() const { return vidurkis;}
+    void setVardas(string vard) { vardas = vard;}
+	void setPavarde(string pav) { pavarde = pav;}
+	void pushNd(int pazymys) { nd.push_back(pazymys);}
+	void setEgzaminas();
+	void apskVidurki();
+	void addVidurkis(int pazymys);
 };
+
+void stud::setEgzaminas(){
+    egz = nd[nd.size()-1];
+    nd.pop_back();
+}
+
+void stud::apskVidurki(){
+    vidurkis = vidurkis/nd.size()*0.4 + egz*0.6;
+}
+
+void stud::addVidurkis(int pazymys){
+    vidurkis += pazymys;
+}
+
+bool maziau(const stud& esm){
+return (esm.getVidurkis() < 5.0);
+}
 
 void nuskaitymasFaile(int& sk, vector<stud>& studentai){
     std::ifstream in("sugeneruota100000.txt");
@@ -30,19 +61,19 @@ void nuskaitymasFaile(int& sk, vector<stud>& studentai){
     sk = 0;
         while(in >> eil){
             stud studentas;
-            studentas.vidurkis = 0;
-            studentas.vardas = eil;
-            in >> studentas.pavarde;
+            studentas.setVardas(eil);
+            in >> eil;
+            studentas.setPavarde(eil);
             while(in.peek()!='\n' && in >> temp){
                 if(in.fail() || temp <= 0) {
                     cerr << "Klaida. Patikrinkite faila" << endl;
                     exit(1);
                 }
-                studentas.nd.push_back(temp);
-                studentas.vidurkis += temp;
+                studentas.pushNd(temp);
+                studentas.addVidurkis(temp);
             }
-            studentas.egz = studentas.nd[studentas.nd.size()-1];
-            studentas.nd.pop_back();
+            studentas.setEgzaminas();
+            studentas.apskVidurki();
             studentai.push_back(studentas);
             sk++;
         }
@@ -57,14 +88,13 @@ int main(){
     nuskaitymasFaile(sk, studentai);
     vector<stud> vargs;
 
-    for(int i = 0; i < studentai.size(); i++){
-        studentai[i].vidurkis = studentai[i].vidurkis/studentai[i].nd.size()*0.4 + studentai[i].egz*0.6;
-        if(studentai[i].vidurkis < 5.0){
-            vargs.push_back(studentai[i]);
-            studentai.erase(studentai.begin()+i);
-            i--;
-        }
-    }
+    vector<stud>::iterator it = studentai.begin();
+
+    it = std::partition(studentai.begin(), studentai.end(), maziau);
+    vector<stud> kieti(it, studentai.end());
+
+    studentai.erase(it, studentai.end());
+    studentai.shrink_to_fit();
 
     auto ending = high_resolution_clock::now();
 
