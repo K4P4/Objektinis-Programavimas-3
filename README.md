@@ -235,7 +235,7 @@ vector<stud> raskMinkstus(deque<stud>& studentai){
 Pastebimas milžiniškas spartos padidėjimas naudojant ```IterpkKietus()``` funckiją palyginus su ```RaskMinkstus()```. Tai įvyksta dėl tos pačios priežasties, dėl kurios *list* buvo greitesnis palyginus su kitais konteineriais V1.0 testavimo metu, nes nebereikia perkopijuoti elementų vieną iš jų ištrynus. Šis būdas leidžia *vector* ir *deque* turėti tiek spartą, tiek atsikratyti nenaudojamos atminties užimtumo. Tarp *vector* ir *deque* pastebimas labai nedidelis spartos skirtumas, tačiau *deque* atveju pačios funkcijos veikimo metu yra naudojama daugiau atminties.
 
 # V1.1 
-
+Vector folderyje pridėta realizacija naudojant ```stud``` klasę vietoj struktūros
 Naudojant ```std::partition``` palyginimas tarp realizacijos su klase ir su struktūra:
 
 | Studentų skaičius |  klasė  | struktūra |
