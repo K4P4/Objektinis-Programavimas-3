@@ -245,3 +245,12 @@ Naudojant ```std::partition``` palyginimas tarp realizacijos su klase ir su stru
 
 Pastebimas minimalus veikimo laiko pailgėjimas kai duomenų skaičius siekia 100000
 
+## Optimization flags
+Rezultatai naudojant O1, O2 ir O3 optimization flag'us:
+
+| Studentų skaičius | default |   O1   |   O2   |   O3   |
+| ----------------  | ------- | ------ | ------ | ------ |
+| 10000             | 0.093s  | 0.067s | 0.066s | 0.066s |
+| 100000            | 0.916s  | 0.648s | 0.647s | 0.646s |
+
+Matoma, jog ```-O1``` optimization flag'as paspartino programos veikimą beveik trečdaliu, o sekantys palyginus su pirmuoju pastebimo skirtumo nepadarė.
