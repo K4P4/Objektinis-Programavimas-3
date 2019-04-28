@@ -9,9 +9,8 @@ using std::string;
 using std::vector;
 using std::cerr;
 using std::endl;
-using std::cout;
-using std::cin;
 using namespace std::chrono;
+
 
 class stud{
 private:
@@ -32,65 +31,7 @@ public:
 	void setEgzaminas();
 	void apskVidurki();
 	void addVidurkis(int pazymys);
-    friend bool operator == (const stud &st1, const stud& st2) { return st1.vidurkis == st2.vidurkis;}
-    friend bool operator != (const stud &st1, const stud& st2) { return st1.vidurkis != st2.vidurkis;}
-    friend std::istream & operator >> (std::istream & in, stud & st);
-    friend std::ostream & operator << (std::ostream & out, const stud &st);
-    stud (const stud& a);
-    stud& operator=(const stud& st);
-    stud(stud&& st) : vardas{st.vardas}, pavarde{st.pavarde}, egz{st.egz}, vidurkis{st.vidurkis},nd{std::move(st.nd)} {};
-    friend bool operator < (const stud &st1, const stud &st2) { return st1.vidurkis < st2.vidurkis;}
-    friend bool operator > (const stud &st1, const stud &st2) { return st1.vidurkis > st2.vidurkis;}
 };
-
-int ivedimas();
-
-std::istream& operator >> (std::istream & in, stud & st){
-        cout << "Pasibaigus namu darbu eilutei iveskite neigiama skaiciu (pvz. -1)" << endl;
-        cout << "Iveskite studento varda: ";
-        cin >> st.vardas;
-        cout << "Pavarde: ";
-        cin >> st.pavarde;
-        cout << "Namu darbu rezultatus:" << endl;
-        st.vidurkis = 0;
-        int k=1;
-            while(k >= 0){
-                k = ivedimas();
-                if(k > 0){
-                    st.nd.push_back(k);
-                    st.vidurkis += k;
-                }
-            }
-        cout << "Egzamino ivertinima: ";
-        st.egz = 0;
-        while(st.egz <= 0) st.egz = ivedimas();
-        return in;
-}
-
-std::ostream & operator << (std::ostream & out, const stud &st){
-        out << "Vardas: " << st.vardas << endl;
-        out << "Pavarde: " << st.pavarde << endl;
-        out << "Vidurkis: " << st.vidurkis << endl;
-        return out;
-}
-
-stud& stud::operator=(const stud& st){
-	if (&st == this) return *this;
-	vardas = st.vardas;
-	pavarde = st.pavarde;
-	egz = st.egz;
-    nd = st.nd;
-	vidurkis = st.vidurkis;
-	return *this;
-}
-
-stud::stud(const stud& st){
-	vardas = st.vardas;
-	pavarde = st.pavarde;
-	egz = st.egz;
-    nd = st.nd;
-	vidurkis = st.vidurkis;
-}
 
 void stud::setEgzaminas(){
     egz = nd[nd.size()-1];
@@ -109,20 +50,8 @@ bool maziau(const stud& esm){
 return (esm.getVidurkis() < 5.0);
 }
 
-int ivedimas(){
-    int k = 0;
-    cin >> k;
-        if(cin.fail()){
-            cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            cerr << "Klaida. Ivestas simbolis nera skaitmuo" << endl;
-            return 0;
-        }
-    else return k;
-}
-
 void nuskaitymasFaile(int& sk, vector<stud>& studentai){
-    std::ifstream in("sugeneruota10000.txt");
+    std::ifstream in("sugeneruota100000.txt");
     string eil;
     if(!in.good()){
         cerr << "Klaida. Toks failas neegzistuoja" << endl;
@@ -157,7 +86,6 @@ int main(){
     auto start = high_resolution_clock::now();
 
     nuskaitymasFaile(sk, studentai);
-
     vector<stud> vargs;
 
     vector<stud>::iterator it = studentai.begin();
