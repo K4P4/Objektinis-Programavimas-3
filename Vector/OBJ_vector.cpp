@@ -11,7 +11,6 @@ using std::cerr;
 using std::endl;
 using namespace std::chrono;
 
-
 class stud{
 private:
     string vardas;
