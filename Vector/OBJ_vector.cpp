@@ -13,21 +13,28 @@ using std::cout;
 using std::cin;
 using namespace std::chrono;
 
-class stud{
-private:
+class zmogus{
+protected:
     string vardas;
     string pavarde;
+public:
+    zmogus(string defv = "", string defp = ""): vardas{defv}, pavarde{defp}{}
+    virtual void setEgzaminas() = 0;
+    void setVardas(string vard) { vardas = vard;}
+	void setPavarde(string pav) { pavarde = pav;}
+    inline string getVardas() const { return vardas;}
+    inline string getPavarde() const { return pavarde;}
+};
+
+class stud: public zmogus{
+protected:
     int egz;
     vector<int> nd;
     double vidurkis;
 public:
     stud() : vidurkis(0){}
     stud(std::istream& is);
-    inline string getVardas() const { return vardas;}
-    inline string getPavarde() const { return pavarde;}
-    inline double getVidurkis() const { return vidurkis;}
-    void setVardas(string vard) { vardas = vard;}
-	void setPavarde(string pav) { pavarde = pav;}
+    double getVidurkis() const { return vidurkis;}
 	void pushNd(int pazymys) { nd.push_back(pazymys);}
 	void setEgzaminas();
 	void apskVidurki();
@@ -38,7 +45,7 @@ public:
     friend std::ostream & operator << (std::ostream & out, const stud &st);
     stud (const stud& a);
     stud& operator=(const stud& st);
-    stud(stud&& st) : vardas{st.vardas}, pavarde{st.pavarde}, egz{st.egz}, vidurkis{st.vidurkis},nd{std::move(st.nd)} {};
+    stud(stud&& st) : zmogus{st.vardas,st.pavarde}, egz{st.egz}, vidurkis{st.vidurkis},nd{std::move(st.nd)} {};
     friend bool operator < (const stud &st1, const stud &st2) { return st1.vidurkis < st2.vidurkis;}
     friend bool operator > (const stud &st1, const stud &st2) { return st1.vidurkis > st2.vidurkis;}
 };
@@ -122,7 +129,7 @@ int ivedimas(){
 }
 
 void nuskaitymasFaile(int& sk, vector<stud>& studentai){
-    std::ifstream in("sugeneruota10000.txt");
+    std::ifstream in("sugeneruota1000.txt");
     string eil;
     if(!in.good()){
         cerr << "Klaida. Toks failas neegzistuoja" << endl;
