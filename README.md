@@ -254,3 +254,32 @@ Rezultatai naudojant O1, O2 ir O3 optimization flag'us:
 | 100000            | 0.916s  | 0.648s | 0.647s | 0.646s |
 
 Matoma, jog ```-O1``` optimization flag'as paspartino programos veikimą beveik trečdaliu, o sekantys palyginus su pirmuoju pastebimo skirtumo nepadarė.
+
+# V2.0
+
+Pridėtas aplankas su Doxygen dokumentacija.
+OBJ_Vector pridėti Google Test testai
+```
+TEST(StudentClassTests, VidurkisLyguNuliui) {
+	stud Student;
+	EXPECT_EQ(0, Student.getVidurkis());
+}
+
+TEST(StudentClassTests, VardasTuriReiksme) {
+	stud Student;
+	EXPECT_EQ("", Student.getVardas());
+}
+
+TEST(StudentClassTests, PavardeTuriReiksme) {
+	stud Student;
+	EXPECT_EQ("", Student.getPavarde());
+}
+
+TEST(StudentClassTests, VektoriusTuscias) {
+	stud Student;
+	Student.apskVidurki();
+	EXPECT_EQ(0, Student.getVidurkis()); 
+}
+```
+
+Paskutinis testas padėjo rasti klaidą: neturėdami pažymių skaičiuojam vidurkį ir gauname -nan, nes vyksta dalyba iš nulio. Ši klaida ištaisyta 2.0 versijoje.
