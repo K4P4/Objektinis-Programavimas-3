@@ -1,0 +1,396 @@
+Versijoms iki v0.\+4 yra sukurtas makefile esantis pagrindiniame aplanke, naudojantis g++ kompiliatoriumi, linux sistemoje, reikia\+:
+\begin{DoxyItemize}
+\item Konsolėje atsidaryti aplanką
+\item make
+\item ./main
+\end{DoxyItemize}
+
+\section*{V0.\+4 failo generavimas, skirstymas bei išvedimas su 10 pažymių kiekvienam studentui užtruko\+:}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily 0,001s su 10 studentų -\/}0,004s su 100 studentų
+\item {\ttfamily 0,029s su 1000 studentų -\/}0,281s su 10000 studentų
+\item \`{}2,781s su 100000 studentų
+\end{DoxyItemize}
+
+Kad išbandyti šį generavimą, programos meniu lange reikia pasirinkti 4 variantą
+
+\section*{V0.\+5 Studentų išskirstymas su 10 pažymių kiekvienam studentui užtruko\+:}
+
+\subsection*{std\+::vector}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Trukmė   }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Trukmė   }\\\cline{1-2}
+\endhead
+100  &0.\+001s   \\\cline{1-2}
+1000  &0.\+009s   \\\cline{1-2}
+10000  &0.\+092s   \\\cline{1-2}
+100000  &0.\+913s   \\\cline{1-2}
+1000000  &8.\+998s   \\\cline{1-2}
+\end{longtabu}
+
+
+\subsection*{std\+::deque}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Trukmė   }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Trukmė   }\\\cline{1-2}
+\endhead
+100  &0.\+001s   \\\cline{1-2}
+1000  &0.\+009s   \\\cline{1-2}
+10000  &0.\+086s   \\\cline{1-2}
+100000  &0.\+865s   \\\cline{1-2}
+1000000  &8.\+458s   \\\cline{1-2}
+\end{longtabu}
+
+
+\subsection*{std\+::list}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Trukmė   }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Trukmė   }\\\cline{1-2}
+\endhead
+100  &0.\+001s   \\\cline{1-2}
+1000  &0.\+009s   \\\cline{1-2}
+10000  &0.\+091s   \\\cline{1-2}
+100000  &0.\+889s   \\\cline{1-2}
+1000000  &8.\+869s   \\\cline{1-2}
+\end{longtabu}
+
+
+Tokiai paprastai užduočiai, kaip duomenų nuskaitymas ir dėjimas į naujus struktūrų masyvus, pagal atliktus matavimus labiausiai tinka deque konteineris, kuris net puse sekundės sparčiau atlieka darbą už vektorių dirbant su 1000000 dydžio masyvu. List konteineris beveik tiksliai užima vidurį tarp deque ir vector, nuo vieno atsilikdamas panašiai kiek lenkdamas kitą. Programoje nėra manipuliuojama duomenimis jau esančiais masyvuose, todėl išmatuotas yra tik duomenų pridėjimo į skirtingą konteinerį efektyvumas.
+
+Naudoti cpp failai pateikti konteineriams atitinkamo pavadinimo aplankuose
+
+\section*{V1.\+0 Studentų išskirstymas su 10 pažymių kiekvienam studentui užtruko\+:}
+
+\subsection*{std\+::vector}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1 Strategija  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 2 Strategija   }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1 Strategija  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 2 Strategija   }\\\cline{1-3}
+\endhead
+100  &0.\+001s  &0.\+002s   \\\cline{1-3}
+1000  &0.\+009s  &0.\+088s   \\\cline{1-3}
+10000  &0.\+092s  &7.\+829s   \\\cline{1-3}
+100000  &0.\+913s  &788.\+002s   \\\cline{1-3}
+1000000  &8.\+998s  &{\itshape Per ilgai}   \\\cline{1-3}
+\end{longtabu}
+
+
+Labai greitai ižvelgiamas didelis vector konteinerio minusas -\/ elementų trynimas. Kadangi ištrynus elementą visi po jo esantys elementai turi būti perkopijuojami per vieną vietą, gauname jog esant dideliam elementų, o tai reiškia ir trynimų skaičiui, programos veikimo laikas pailgėja net iki 863 kartų (su 100000 duomenų). Nors naudojamos atminties kiekis sumažėja dvigubai (vietoje trijų konteinerių, kuriuose yra kiekvienas elementas du kartus, turime du konteinerius, kuriuose jie nesikartoja) tai, mano manymu, neatperka tokio milžininško veikimo laiko pailgėjimo, o jei atmintis tampa didele problema, tuomet reiktų naudoti vector konteinerio alternatyvas arba stl algoritmus.
+
+\subsection*{std\+::deque}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1 Strategija  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 2 Strategija   }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1 Strategija  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 2 Strategija   }\\\cline{1-3}
+\endhead
+100  &0.\+001s  &0.\+002s   \\\cline{1-3}
+1000  &0.\+009s  &0.\+042s   \\\cline{1-3}
+10000  &0.\+086s  &3.\+294s   \\\cline{1-3}
+100000  &0.\+865s  &324.\+294s   \\\cline{1-3}
+1000000  &8.\+458s  &{\itshape Per ilgai}   \\\cline{1-3}
+\end{longtabu}
+
+
+Deque konteinerio situacija panaši kaip ir vector, veikimo laikas lyginant su 1 strategija didėja eksponentiškai. Tačiau lyginant su vector, veikimo laikas yra du kartus trumpesnis, tai yra todėl, kad deque pasižymi savybe išsiskirstyti duomenis į daugiau nei vieną blokus. Rezultatas tas, kad, ištrynus tam tikrą elementą reikia perkopijuoti ne visus elementus, o tik tuos esančius tame pačiame atminties bloke. Nors tai šiek tiek ir pagerina situaciją, bet vis dėlto, tikrai nėra efektyvus sprendimas.
+
+\subsection*{std\+::list}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1 Strategija  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 2 Strategija   }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1 Strategija  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 2 Strategija   }\\\cline{1-3}
+\endhead
+100  &0.\+001s  &0.\+001s   \\\cline{1-3}
+1000  &0.\+009s  &0.\+008s   \\\cline{1-3}
+10000  &0.\+091s  &0.\+082s   \\\cline{1-3}
+100000  &0.\+889s  &0.\+811s   \\\cline{1-3}
+1000000  &8.\+869s  &8.\+038s   \\\cline{1-3}
+\end{longtabu}
+
+
+Priešingai nei kiti du konteineriai, list tampa netgi efektyvesnis naudojantis antra strategija, kadangi elementai yra išdėstyti ne vienas šalia kito blokuose, o sujungti vienas su kitu double linked list pagrindu. Tai reiškia, jog nors ir priėjimas prie konkretaus elemento yra lėtesnis, bet kai jis prieitas trynimas tėra rodyklės nukreipimas, kas yra labai pigus veiksmas laiko atžvilgiu. Mūsų atveju, kuomet vistiek turi būti iteruoti visi elementai, list konteinerio lėtesnis priėjimas prie elemento tampa nesvarbus ir naudojantis antra strategija tai yra pats sparčiausias užduoties atlikimo būdas.
+
+Naudoti cpp failai pateikti konteineriams atitinkamo pavadinimo aplankuose
+
+\section*{Algoritmų bandymas}
+
+\subsection*{find\+\_\+if}
+
+Pritaikius find\+\_\+if algoritmą antrąjai strategijai pavidalu\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{vector<stud>::iterator it = studentai.begin();}
+\DoxyCodeLine{    it = std::find\_if(it, studentai.end(), maziau);}
+\DoxyCodeLine{    while(it != studentai.end())\{}
+\DoxyCodeLine{        vargs.push\_back(*it);}
+\DoxyCodeLine{        it = studentai.erase(it);}
+\DoxyCodeLine{        it = std::find\_if(it, studentai.end(), maziau);}
+\DoxyCodeLine{    \}}
+\end{DoxyCode}
+ kur {\itshape maziau} tai\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{bool maziau(const stud\& esm)\{}
+\DoxyCodeLine{return (esm.vidurkis < 5.0);}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+ Gaunami tokie laikai\+:
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Su find\+\_\+if()  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Be algoritmo   }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Su find\+\_\+if()  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Be algoritmo   }\\\cline{1-3}
+\endhead
+100  &0.\+002s  &0.\+002s   \\\cline{1-3}
+1000  &0.\+088s  &0.\+088s   \\\cline{1-3}
+10000  &7.\+698s  &7.\+829s   \\\cline{1-3}
+100000  &794.\+87s  &788.\+002s   \\\cline{1-3}
+1000000  &{\itshape Per ilgai}  &{\itshape Per ilgai}   \\\cline{1-3}
+\end{longtabu}
+
+
+Matoma, jog algoritmas veikimo ženkliai nepaspartino.
+
+\subsection*{copy\+\_\+if + remove\+\_\+if}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{std::copy\_if(studentai.begin(), studentai.end(), std::back\_inserter(vargs), maziau);}
+\DoxyCodeLine{it = std::remove\_if(studentai.begin(), studentai.end(), maziau);}
+\DoxyCodeLine{studentai.erase(it, studentai.end());}
+\DoxyCodeLine{studentai.shrink\_to\_fit();}
+\end{DoxyCode}
+ Palyginimas su 1-\/ąja strategija\+:
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ copy\+\_\+if+remove\+\_\+if  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1 Strategija   }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ copy\+\_\+if+remove\+\_\+if  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1 Strategija   }\\\cline{1-3}
+\endhead
+1000  &0.\+009s  &0.\+009s   \\\cline{1-3}
+10000  &0.\+092s  &0.\+092s   \\\cline{1-3}
+100000  &0.\+893s  &0.\+913s   \\\cline{1-3}
+1000000  &8.\+847s  &8.\+998s   \\\cline{1-3}
+\end{longtabu}
+
+
+Padidėjo ir sparta ir išspręsta nenaudojamos atminties problema lyginant su pirmąja strategija.
+
+\subsection*{partition ir stable\+\_\+partition}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{vector<stud>::iterator it = studentai.begin();}
+\DoxyCodeLine{}
+\DoxyCodeLine{it = std::stable\_partition(studentai.begin(), studentai.end(), maziau);}
+\DoxyCodeLine{vector<stud> kieti(it, studentai.end());}
+\DoxyCodeLine{}
+\DoxyCodeLine{studentai.erase(it, studentai.end());}
+\DoxyCodeLine{studentai.shrink\_to\_fit();}
+\end{DoxyCode}
+
+
+Palyginimas su 1-\/ąja strategija\+:
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{4}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ stable\+\_\+partition  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ partition  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1 Strategija   }\\\cline{1-4}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ stable\+\_\+partition  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ partition  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1 Strategija   }\\\cline{1-4}
+\endhead
+1000  &0.\+009s  &0.\+009s  &0.\+009s   \\\cline{1-4}
+10000  &0.\+098s  &0.\+093s  &0.\+092s   \\\cline{1-4}
+100000  &0.\+973s  &0.\+904s  &0.\+913s   \\\cline{1-4}
+1000000  &9.\+499s  &8.\+701s  &8.\+998s   \\\cline{1-4}
+\end{longtabu}
+
+
+Pastebima, jog stable\+\_\+partition yra lėtesnis už 1-\/ąją strategiją, o partition šiek tiek greitesnis. Partition greitesnis už 1-\/ąją strategiją todėl, kad nereikia ieškoti ką kopijuoti iteruojant per visą vektorių, kopijuojamas yra visas blokas elementų. O stable\+\_\+partition atsilieka, nes rikiuojant jis išlaiko originalią elementų eilės tvarką.
+
+\subsection*{greičiausias būdas\+: partition be kopijavimo}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{vector<stud>::iterator it = studentai.begin();}
+\DoxyCodeLine{it = std::partition(studentai.begin(), studentai.end(), maziau);}
+\end{DoxyCode}
+
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Trukmė   }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Trukmė   }\\\cline{1-2}
+\endhead
+1000  &0.\+009s   \\\cline{1-2}
+10000  &0.\+086s   \\\cline{1-2}
+100000  &0.\+838s   \\\cline{1-2}
+1000000  &8.\+197s   \\\cline{1-2}
+\end{longtabu}
+
+
+Nekuriant dviejų vektorių, o tiesiog prisimenant iteratorių, ties kuriuo prasideda \char`\"{}kieti\char`\"{} studentai, yra sutaupoma daug laiko, tačiau manipuliacija vektoriais gali būti sudėtingesnė. Pvz. jeigu norėsime funkcijai perduoti \char`\"{}kietus\char`\"{} studentus, turėsime perduoti visą bendrą vektorių ir iteratorių.
+
+\section*{Papildoma užduotis}
+
+\#\# Funkcija su vector 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{vector<stud> iterpkKietus(vector<stud>\& studentai)\{}
+\DoxyCodeLine{    vector<stud> minksti;}
+\DoxyCodeLine{    vector<stud>::size\_type i = 0;}
+\DoxyCodeLine{    vector<stud>::size\_type it = 0;}
+\DoxyCodeLine{    while (i != studentai.size()) \{}
+\DoxyCodeLine{      if (gavoSkola(studentai[i])) \{}
+\DoxyCodeLine{        minksti.push\_back(studentai[i]);}
+\DoxyCodeLine{      \} else\{}
+\DoxyCodeLine{        studentai[it] = studentai[i];}
+\DoxyCodeLine{        ++it;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      ++i;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    studentai.resize(it);}
+\DoxyCodeLine{    studentai.shrink\_to\_fit();}
+\DoxyCodeLine{    return minksti;}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+\subsection*{Funkcija su deque}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{vector<stud> raskMinkstus(deque<stud>\& studentai)\{}
+\DoxyCodeLine{    vector<stud> minksti;}
+\DoxyCodeLine{    int it = 0;}
+\DoxyCodeLine{    int n = studentai.size();}
+\DoxyCodeLine{    for(int i = 0; i < n; i++) \{}
+\DoxyCodeLine{      if(gavoSkola(studentai[i]))\{}
+\DoxyCodeLine{        minksti.push\_back(studentai[i]);}
+\DoxyCodeLine{      \} else\{}
+\DoxyCodeLine{        studentai.push\_front(studentai[i]);}
+\DoxyCodeLine{        ++it;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    studentai.resize(it);}
+\DoxyCodeLine{    studentai.shrink\_to\_fit();}
+\DoxyCodeLine{    return minksti;}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+\subsection*{Rezultatai}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{4}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Rask\+Minkstus()  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Iterpk\+Kietus() Vector  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Iterpk\+Kietus() Deque   }\\\cline{1-4}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Rask\+Minkstus()  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Iterpk\+Kietus() Vector  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Iterpk\+Kietus() Deque   }\\\cline{1-4}
+\endhead
+10000  &7.\+764s  &0.\+092s  &0.\+091s   \\\cline{1-4}
+100000  &795.\+47s  &0.\+916s  &0.\+876s   \\\cline{1-4}
+\end{longtabu}
+
+
+Pastebimas milžiniškas spartos padidėjimas naudojant {\ttfamily Iterpk\+Kietus()} funckiją palyginus su {\ttfamily Rask\+Minkstus()}. Tai įvyksta dėl tos pačios priežasties, dėl kurios {\itshape list} buvo greitesnis palyginus su kitais konteineriais V1.\+0 testavimo metu, nes nebereikia perkopijuoti elementų vieną iš jų ištrynus. Šis būdas leidžia {\itshape vector} ir {\itshape deque} turėti tiek spartą, tiek atsikratyti nenaudojamos atminties užimtumo. Tarp {\itshape vector} ir {\itshape deque} pastebimas labai nedidelis spartos skirtumas, tačiau {\itshape deque} atveju pačios funkcijos veikimo metu yra naudojama daugiau atminties.
+
+\section*{V1.\+1}
+
+Vector folderyje pridėta realizacija naudojant {\ttfamily stud} klasę vietoj struktūros Naudojant {\ttfamily std\+::partition} palyginimas tarp realizacijos su klase ir su struktūra\+:
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ klasė  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ struktūra   }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ klasė  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ struktūra   }\\\cline{1-3}
+\endhead
+10000  &0.\+093s  &0.\+093s   \\\cline{1-3}
+100000  &0.\+916s  &0.\+904s   \\\cline{1-3}
+\end{longtabu}
+
+
+Pastebimas minimalus veikimo laiko pailgėjimas kai duomenų skaičius siekia 100000
+
+\subsection*{Optimization flags}
+
+Rezultatai naudojant O1, O2 ir O3 optimization flag\textquotesingle{}us\+:
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{5}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ default  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ O1  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ O2  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ O3   }\\\cline{1-5}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Studentų skaičius  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ default  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ O1  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ O2  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ O3   }\\\cline{1-5}
+\endhead
+10000  &0.\+093s  &0.\+067s  &0.\+066s  &0.\+066s   \\\cline{1-5}
+100000  &0.\+916s  &0.\+648s  &0.\+647s  &0.\+646s   \\\cline{1-5}
+\end{longtabu}
+
+
+Matoma, jog {\ttfamily -\/O1} optimization flag\textquotesingle{}as paspartino programos veikimą beveik trečdaliu, o sekantys palyginus su pirmuoju pastebimo skirtumo nepadarė. 
